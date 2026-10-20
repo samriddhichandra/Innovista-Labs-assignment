@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # HamperQuote
 
 HamperQuote is a browser-based prototype for independent hamper sellers who receive custom orders through Instagram and WhatsApp. It helps organise an inquiry into an editable, itemised quote and a customer-ready summary.
@@ -93,3 +94,6 @@ tests/           Quote-logic tests and optional UI journey
 ## Project provenance
 
 First draft built with Claude in chat; reviewed, critiqued and corrected with Codex in VS Code.
+=======
+# Innovista-Labs-assignment
+>>>>>>> 14cb841ab1d05fb9387bff94d2b97592c0dcc594
