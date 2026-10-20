@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HamperQuote — inquiry to quote in minutes (prototype)</title>
+<style>
+:root{--bg:#faf3e7;--card:#fffdf8;--ink:#2b1a14;--mut:#7a665c;--maroon:#7a1f2b;--gold:#d9962b;--line:#e6d6bd;--err:#b3261e;--warn:#8a5a00;--ok:#2e6b3a}
+@media(prefers-color-scheme:dark){:root{--bg:#1f1512;--card:#2a1d19;--ink:#f6ebdc;--mut:#b9a698;--maroon:#e08a95;--gold:#e8b055;--line:#4a3830;--err:#ff8a80;--warn:#f2c26b;--ok:#8fd19e}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Georgia,'Times New Roman',serif}
+h1,h2,h3{font-family:'Palatino Linotype',Palatino,Georgia,serif;margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding:20px}
+.hero{padding:28px 0 8px}.hero h1{font-size:clamp(28px,5vw,44px);color:var(--maroon);line-height:1.1}
+.hero p{max-width:640px;color:var(--mut)}.badge{display:inline-block;background:var(--gold);color:#2b1a14;font:600 12px system-ui;padding:3px 10px;border-radius:99px;letter-spacing:.04em}
+.sim{border:1px dashed var(--gold);background:var(--card);padding:10px 14px;border-radius:10px;font:14px system-ui;color:var(--mut);margin:14px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}@media(max-width:820px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+label{display:block;font:600 13px system-ui;margin:12px 0 4px}
+input,select,textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:15px system-ui}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.items{display:grid;grid-template-columns:1fr 1fr;gap:6px}.items label{font:14px system-ui;font-weight:400;margin:0;border:1px solid var(--line);border-radius:8px;padding:7px;display:flex;gap:8px;align-items:center}.items input{width:auto}
+button{font:600 14px system-ui;border:0;border-radius:8px;padding:10px 16px;cursor:pointer;background:var(--maroon);color:#fff}button.sec{background:transparent;color:var(--maroon);border:1px solid var(--maroon)}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.msg{font:14px system-ui;padding:8px 12px;border-radius:8px;margin:6px 0}.e{border-left:4px solid var(--err);color:var(--err)}.w{border-left:4px solid var(--warn);color:var(--warn)}
+.empty{color:var(--mut);font:14px system-ui;text-align:center;padding:36px 8px}
+table{width:100%;border-collapse:collapse;font:14px system-ui}td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left}td input{padding:4px 6px;width:80px}.r{text-align:right}
+.tot td{font-weight:700;border-bottom:0}.summary{white-space:pre-wrap;font:14px/1.55 system-ui;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px}
+.scroll{overflow-x:auto}.how{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0;font:13px system-ui}@media(max-width:820px){.how{grid-template-columns:1fr 1fr}}.how div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}.how b{color:var(--maroon)}
+</style></head><body><div class="wrap">
+<div class="hero"><span class="badge">PROTOTYPE · MOCK DATA</span>
+<h1>HamperQuote</h1>
+<p>For Instagram and WhatsApp hamper sellers: turn a messy inquiry ("budget 800, 30 boxes, name cards, by 5th") into a checked, itemised quote you can send in minutes. Checks missing details, contradictions, deadlines and budget, so you quote fast without costly mistakes.</p></div>
+<div class="how"><div><b>1</b> Enter the inquiry</div><div><b>2</b> Flags raised on gaps and conflicts</div><div><b>3</b> Review and edit the quote</div><div><b>4</b> Copy the customer summary</div></div>
+<div class="sim"><b>Simulated / not built:</b> AI parsing of free-text chats, WhatsApp sending, payments, saving data. Catalogue, prices (25% margin), 18% GST, lead times and delivery fees are mock rules. The "Load sample inquiry" button fills pasted-chat fields by hand-written mapping, not AI.</div>
+<div class="grid">
+<section class="card"><h2>1. Customer inquiry</h2>
+<div class="btns"><button type="button" class="sec" id="sample">Load sample inquiry</button><button type="button" class="sec" id="clear">Clear</button></div>
+<label for="chat">Pasted chat (reference only)</label><textarea id="chat" rows="3" placeholder="Hi, need 30 diwali boxes with our company name, budget ~800 each, deliver in Lucknow by 5 Nov"></textarea>
+<div class="row"><div><label for="customer">Customer name *</label><input id="customer"></div><div><label for="occasion">Occasion</label><select id="occasion"><option>Diwali</option><option>Wedding</option><option>Birthday</option><option>Corporate</option></select></div></div>
+<div class="row"><div><label for="qty">Quantity *</label><input id="qty" type="number" min="1"></div><div><label for="budget">Budget per hamper (₹) *</label><input id="budget" type="number" min="1"></div></div>
+<label>Items *</label><div class="items" id="items"></div>
+<div class="row"><div><label for="pers">Personalisation</label><select id="pers"></select></div><div><label for="zone">Delivery zone</label><select id="zone"></select></div></div>
+<label for="date">Delivery date *</label><input id="date" type="date">
+<div id="flags" aria-live="polite"></div>
+<div class="btns"><button type="button" id="gen">Generate quote</button></div></section>
+<section class="card"><h2>2. Quote and summary</h2><div id="out"><div class="empty">No quote yet. Fill in the inquiry and press <b>Generate quote</b>.</div></div></section>
+</div></div>
+<script src="quote-logic.js"></script>
+<script>
+const Q=QuoteLogic,$=id=>document.getElementById(id),inr=n=>'₹'+Number(n).toLocaleString('en-IN');
+const today=new Date().toISOString().slice(0,10);let quote=null,input=null;
+$('items').innerHTML=Q.CATALOG.map(c=>`<label><input type="checkbox" value="${c.id}">${c.name}</label>`).join('');
+$('pers').innerHTML=Object.entries(Q.PERSONALISATION).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+$('zone').innerHTML=Object.entries(Q.DELIVERY).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+$('date').min=today;
+function read(){return{customer:$('customer').value,occasion:$('occasion').value,qty:+$('qty').value,budget:+$('budget').value,items:[...document.querySelectorAll('#items input:checked')].map(x=>x.value),personalisation:$('pers').value,zone:$('zone').value,deliveryDate:$('date').value}}
+function flags(v){$('flags').innerHTML=v.errors.map(e=>`<div class="msg e" role="alert">✖ ${e}</div>`).join('')+v.warnings.map(w=>`<div class="msg w">⚠ ${w}</div>`).join('')}
+$('sample').onclick=()=>{const d=new Date();d.setDate(d.getDate()+20);$('chat').value='Hi, need 30 diwali boxes with our company name, budget ~800 each, deliver in Lucknow by 5 Nov';$('customer').value='Sample Customer';$('occasion').value='Diwali';$('qty').value=30;$('budget').value=800;document.querySelectorAll('#items input').forEach(x=>x.checked=['mithai','diya','choc'].includes(x.value));$('pers').value='tag';$('zone').value='local';$('date').value=d.toISOString().slice(0,10);$('flags').innerHTML=''};
+$('clear').onclick=()=>{document.querySelectorAll('input,textarea').forEach(x=>{x.type==='checkbox'?x.checked=false:x.value=''});$('flags').innerHTML='';quote=null;render()};
+$('gen').onclick=()=>{input=read();const v=Q.validate(input,today);flags(v);if(v.errors.length){quote=null;render();return}quote=Q.compute(input);render()};
+function recalc(){const lines=quote.lines.map((l,i)=>({...l,qty:+$('q'+i).value||0,unit:+$('u'+i).value||0}));quote={lines,...Q.totals(lines,input.qty)};render(true)}
+function summary(){const l=quote.lines.map(x=>`• ${x.label}: ${x.qty} × ${inr(x.unit)} = ${inr(x.qty*x.unit)}`).join('\n');
+return `Hello ${input.customer.split('(')[0].trim()}, thank you for your ${input.occasion} gifting inquiry!\n\nQuote for ${input.qty} hampers\n${l}\n\nSubtotal: ${inr(quote.subtotal)}\nGST (18%): ${inr(quote.gst)}\nTotal: ${inr(quote.total)} (about ${inr(Math.round(quote.total/input.qty))} per hamper)\n\nPersonalisation: ${Q.PERSONALISATION[input.personalisation].label}\nRequested delivery: ${input.deliveryDate}\n\nAssumptions: prices valid 7 days; final artwork/message approved before packing; 50% advance to confirm.\n\nReply YES to confirm.`}
+function render(keep){if(!quote){$('out').innerHTML='<div class="empty">No quote yet. Fill in the inquiry and press <b>Generate quote</b>.</div>';return}
+$('out').innerHTML=`<p style="font:14px system-ui;color:var(--mut)">Edit quantity or unit price; totals update.</p><div class="scroll"><table><tr><th>Item</th><th>Qty</th><th>Unit ₹</th><th class="r">Amount</th></tr>${quote.lines.map((l,i)=>`<tr><td>${l.label}</td><td><input id="q${i}" type="number" min="0" value="${l.qty}"></td><td><input id="u${i}" type="number" min="0" value="${l.unit}"></td><td class="r">${inr(l.qty*l.unit)}</td></tr>`).join('')}<tr class="tot"><td colspan="3">Subtotal</td><td class="r">${inr(quote.subtotal)}</td></tr><tr class="tot"><td colspan="3">GST 18% (mock)</td><td class="r">${inr(quote.gst)}</td></tr><tr class="tot"><td colspan="3">Total</td><td class="r">${inr(quote.total)}</td></tr></table></div>
+<div class="btns"><button type="button" class="sec" id="recalc">Update totals</button></div><h3 style="margin:18px 0 6px">Customer-facing summary</h3><div class="summary" id="sum">${summary().replace(/</g,'&lt;')}</div>
+<div class="btns"><button type="button" id="copy">Copy summary</button><button type="button" class="sec" id="dl">Download .txt</button></div><div id="cm" style="font:13px system-ui;color:var(--ok)"></div>`;
+$('recalc').onclick=recalc;
+$('copy').onclick=async()=>{try{await navigator.clipboard.writeText(summary());$('cm').textContent='Copied.'}catch(e){$('cm').textContent='Copy blocked by browser; select the text manually.'}};
+$('dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([summary()],{type:'text/plain'}));a.download='quote.txt';a.click()}}
+</script></body></html>
