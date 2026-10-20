@@ -1,0 +1,13 @@
+const assert = require('assert'); const Q = require('../app/quote-logic.js');
+const base = { customer: 'Asha', qty: 30, budget: 800, items: ['mithai', 'diya'], personalisation: 'tag', zone: 'local', deliveryDate: '2026-11-05' };
+const today = '2026-10-18'; let n = 0; const t = (name, fn) => { fn(); n++; console.log('PASS', name); };
+t('valid order has no errors', () => assert.deepStrictEqual(Q.validate(base, today).errors, []));
+t('missing customer is error', () => assert.ok(Q.validate({ ...base, customer: '' }, today).errors.length));
+t('no items is error', () => assert.ok(Q.validate({ ...base, items: [] }, today).errors.length));
+t('past date is error', () => assert.ok(Q.validate({ ...base, deliveryDate: '2026-10-01' }, today).errors.some(e => /past/.test(e))));
+t('logo sleeve under min qty is contradiction error', () => assert.ok(Q.validate({ ...base, qty: 10, personalisation: 'sleeve' }, today).errors.some(e => /minimum/.test(e))));
+t('tight deadline is warning not error', () => { const r = Q.validate({ ...base, deliveryDate: '2026-10-20' }, today); assert.equal(r.errors.length, 0); assert.ok(r.warnings.some(w => /prepare/.test(w))); });
+t('over budget is warning', () => assert.ok(Q.validate({ ...base, budget: 200 }, today).warnings.some(w => /exceeds/.test(w))));
+t('totals match lines + 18% GST', () => { const q = Q.compute(base); const s = q.lines.reduce((a, l) => a + l.qty * l.unit, 0); assert.equal(q.subtotal, s); assert.equal(q.total, s + Math.round(s * 0.18)); });
+t('known value: 30 x (225+175+45+25) + 150 = 14,250', () => assert.equal(Q.compute(base).subtotal, 14250));
+console.log(n + ' tests passed');

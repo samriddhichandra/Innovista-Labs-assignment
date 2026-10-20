@@ -1,0 +1,6 @@
+# Asset B — Permission-based community partnership pitch (concept; NOT sent)
+**Audience:** admins of seller/home-baker/gifting communities on WhatsApp or Facebook (to be discovered; their existence and size are not verified). **Channel:** private message to the admin, asking permission first. **Pain (admin's framing):** members ask each other how to price and quote festive orders.
+**Message:** "Hi [name], I'm building a small tool that checks custom-hamper quotes for missing details, deadlines and budget conflicts. Would you let me run a free 20-minute 'quote clinic' for your members where I review one real inquiry each, using only what they choose to share? No selling in the group unless you approve."
+**CTA:** admin picks a date for the clinic. Members who want the tool message me for the ₹999 season pass.
+**Hypothesis:** trusted introductions convert better than cold DMs. **Metric:** admins who agree ÷ admins asked; clinic attendees → demos → paid. **Low-cost test:** ask 10 admins; need ≥3 yeses to continue. Cost ₹0 (₹2,500 budgeted for giveaway only if approved).
+**Difference from A:** B is relationship- and trust-led, one-to-few, high effort per lead; A is broadcast, one-to-many, low effort per lead.
